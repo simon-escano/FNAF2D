@@ -126,21 +126,21 @@ public class Game extends JPanel implements Runnable {
     public void changeState(States state) {
         this.state = state;
         switch (state) {
-            case PLAY -> {
+            case PLAY:
                 stopSound();
                 loopSound(0);
-            }
-            case PAUSE -> {
+                break;
+            case PAUSE:
                 stopSound();
-            }
-            case TITLE -> {
+                break;
+            case TITLE:
                 restart();
                 stopSound();
                 loopSound(3);
-            }
-            case GAME_OVER -> {
+                break;
+            case GAME_OVER:
                 restart();
-            }
+                break;
         }
     }
 

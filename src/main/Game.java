@@ -1,5 +1,6 @@
 package main;
 
+import AI.Pathfinder;
 import entity.NPC;
 import entity.NPCManager;
 import entity.Player;
@@ -27,11 +28,12 @@ public class Game extends JPanel implements Runnable {
     Thread thread = new Thread(this);
     Sound sbg = new Sound();
     Sound sfx = new Sound();
-    TileManager tileManager = new TileManager(this);
+    public TileManager tileManager = new TileManager(this);
     ItemManager itemManager = new ItemManager(this);
     NPCManager NPCManager = new NPCManager(this);
     public CollisionChecker collisionChecker = new CollisionChecker(this);
     public KeyHandler keyHandler = new KeyHandler(this);
+    public Pathfinder pathfinder = new Pathfinder(this);
     public Player player = new Player(this);
     public Item[] items;
     public NPC[] npc;

@@ -59,7 +59,6 @@ public class Player extends Entity {
             game.collisionChecker.checkTile(this);
 
             pickUpItem(game.collisionChecker.checkItem(this, true));
-            interactNPC(game.collisionChecker.checkEntity(this, game.npc));
 
             if (!collisionOn) {
                 if (direction.equals("up")) mapY -= speed;
@@ -96,19 +95,6 @@ public class Player extends Entity {
                 game.playSound(8);
                 break;
         }
-    }
-
-    public void interactNPC(int i) {
-        if (i == -1) return;
-        switch (game.npc[i].name) {
-            case "Freddy":
-            case "Bonnie":
-            case "Chica":
-            case "Foxy":
-                Game.deathCause = "[insert " + game.npc[i].name + " jumpscare]";
-                game.playSound(4);
-        }
-        game.changeState(Game.States.GAME_OVER);
     }
 
     public void draw(Graphics2D graphics2D) {

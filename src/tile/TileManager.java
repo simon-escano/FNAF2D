@@ -9,6 +9,7 @@ public class TileManager {
     Game game;
     public Tile[] tiles;
     public int[][] mapTileNumber;
+    boolean isPath = true;
 
     public TileManager(Game game) {
         this.game = game;
@@ -90,6 +91,16 @@ public class TileManager {
                         mapY - game.tileSize < game.player.mapY + game.player.screenY) {
                     graphics2D.drawImage(tiles[k].image, screenX, screenY, game.tileSize, game.tileSize, null);
                 }
+            }
+        }
+        if (isPath) {
+            graphics2D.setColor(new Color(255, 0, 0, 70));
+            for (int i = 0; i < game.pathfinder.pathList.size(); i++) {
+                int mapX = game.pathfinder.pathList.get(i).col * game.tileSize;
+                int mapY = game.pathfinder.pathList.get(i).row * game.tileSize;
+                int screenX = mapX - game.player.mapX + game.player.screenX;
+                int screenY = mapY - game.player.mapY + game.player.screenY;
+                graphics2D.fillRect(screenX, screenY, game.tileSize, game.tileSize);
             }
         }
     }

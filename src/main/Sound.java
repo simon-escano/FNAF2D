@@ -13,6 +13,12 @@ public class Sound {
         soundURL[0] = getClass().getResource("/sound/ambience.wav");
         soundURL[1] = getClass().getResource("/sound/footstep1.wav");
         soundURL[2] = getClass().getResource("/sound/footstep2.wav");
+        soundURL[3] = getClass().getResource("/sound/main-menu.wav");
+        soundURL[4] = getClass().getResource("/sound/jumpscare.wav");
+        soundURL[5] = getClass().getResource("/sound/switch.wav");
+        soundURL[6] = getClass().getResource("/sound/select.wav");
+        soundURL[7] = getClass().getResource("/sound/pickup.wav");
+        soundURL[8] = getClass().getResource("/sound/door.wav");
     }
 
     public void setFile(int i) {
@@ -21,7 +27,7 @@ public class Sound {
             clip = AudioSystem.getClip();
             clip.open(ais);
         } catch (Exception e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
     }
 

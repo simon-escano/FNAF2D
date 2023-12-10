@@ -12,8 +12,8 @@ import java.util.Objects;
 public class Player extends Entity {
 
     BufferedImage fov;
-    public int numOfItems = 0;
-    public Item[] items = new Item[50];
+    public int numOfItems;
+    public Item[] items;
 
     public Player(Game game) {
         super(game);
@@ -35,6 +35,8 @@ public class Player extends Entity {
     }
 
     public void setDefaultValues() {
+        numOfItems = 0;
+        items = new Item[50];
         mapX = game.tileSize * 21;
         mapY = game.tileSize * 45;
         speed = 4;
@@ -42,21 +44,22 @@ public class Player extends Entity {
     }
 
     public void update() {
-        if (game.keyHandler.shiftPressed) {
+        if (game.keyHandler.SHIFT) {
             speed = 6;
         } else {
             speed = 4;
         }
-        if (game.keyHandler.upPressed || game.keyHandler.downPressed || game.keyHandler.leftPressed || game.keyHandler.rightPressed) {
-            if (game.keyHandler.upPressed) direction = "up";
-            if (game.keyHandler.downPressed) direction = "down";
-            if (game.keyHandler.leftPressed) direction = "left";
-            if (game.keyHandler.rightPressed) direction = "right";
+        if (game.keyHandler.W || game.keyHandler.S || game.keyHandler.A || game.keyHandler.D) {
+            if (game.keyHandler.W) direction = "up";
+            if (game.keyHandler.S) direction = "down";
+            if (game.keyHandler.A) direction = "left";
+            if (game.keyHandler.D) direction = "right";
 
             collisionOn = false;
             game.collisionChecker.checkTile(this);
 
             pickUpItem(game.collisionChecker.checkItem(this, true));
+            interactNPC(game.collisionChecker.checkEntity(this, game.npc));
 
             if (!collisionOn) {
                 if (direction.equals("up")) mapY -= speed;
@@ -80,23 +83,36 @@ public class Player extends Entity {
     }
 
     public void pickUpItem(int i) {
-        if (i != -1) {
-            String itemName = game.items[i].name;
-            switch (itemName) {
-                case "Mask":
-                    items[numOfItems] = game.items[i];
-                    numOfItems++;
-                    game.items[i] = null;
-                    break;
-                case "Door":
-                    game.items[i] = null;
-                    break;
-            }
+        if (i == -1) return;
+        switch (game.items[i].name) {
+            case "Mask":
+                items[numOfItems] = game.items[i];
+                numOfItems++;
+                game.items[i] = null;
+                game.playSound(7);
+                break;
+            case "Door":
+                game.items[i] = null;
+                game.playSound(8);
+                break;
         }
     }
 
+    public void interactNPC(int i) {
+        if (i == -1) return;
+        switch (game.npc[i].name) {
+            case "Freddy":
+            case "Bonnie":
+            case "Chica":
+            case "Foxy":
+                Game.deathCause = "[insert " + game.npc[i].name + " jumpscare]";
+                game.playSound(4);
+        }
+        game.changeState(Game.States.GAME_OVER);
+    }
+
     public void draw(Graphics2D graphics2D) {
-        if (!game.keyHandler.upPressed && !game.keyHandler.downPressed && !game.keyHandler.leftPressed && !game.keyHandler.rightPressed)
+        if (!game.keyHandler.W && !game.keyHandler.S && !game.keyHandler.A && !game.keyHandler.D)
             spriteNum = 0;
         super.draw(graphics2D);
         graphics2D.drawImage(fov, (screenX - game.screen.width/2) + game.tileSize/2, (screenY - game.screen.height/2) + game.tileSize/2, game.screen.width, game.screen.height, null);

@@ -5,7 +5,7 @@ import main.Game;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
-public class Item {
+public abstract class Item {
     public BufferedImage image;
     public String name;
     public boolean collision = false;

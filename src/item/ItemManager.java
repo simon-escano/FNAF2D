@@ -6,12 +6,14 @@ import java.awt.*;
 
 public class ItemManager {
     Game game;
-    int numOfItems = 0;
+    int numOfItems;
     public ItemManager(Game game) {
         this.game = game;
     }
 
     public void loadItems() {
+        numOfItems = 0;
+        game.items = new Item[50];
         addItem(new Mask(23, 9, game));
         addItem(new GenItem("sink.png", "Sink", 41, 18, game));
         addItem(new GenItem("toilet.png", "Toilet", 43, 20, game));

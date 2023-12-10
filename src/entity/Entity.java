@@ -8,7 +8,7 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.Objects;
 
-public class Entity {
+public abstract class Entity {
     Game game;
     public int mapX, mapY, screenX, screenY;
     public int speed;
@@ -16,9 +16,10 @@ public class Entity {
     public String direction;
     public int spriteCtr = 0;
     public int spriteNum = 1;
-    public Rectangle solidArea;
+    public Rectangle solidArea = new Rectangle(0, 0, 48, 48);
     public int solidAreaDefaultX, solidAreaDefaultY;
     public boolean collisionOn = false;
+    public int actionLockCounter = 0;
 
     public Entity(Game game) {
         this.game = game;
@@ -66,6 +67,19 @@ public class Entity {
                 if (spriteNum == 1) image = right1;
                 if (spriteNum == 2) image = right2;
                 break;
+        }
+        if (this instanceof Player) {
+            graphics2D.drawImage(image, screenX, screenY, game.tileSize, game.tileSize, null);
+            return;
+        }
+        int screenX = mapX - game.player.mapX + game.player.screenX;
+        int screenY = mapY - game.player.mapY + game.player.screenY;
+
+        if (mapX + game.tileSize > game.player.mapX - game.player.screenX &&
+                mapX - game.tileSize < game.player.mapX + game.player.screenX &&
+                mapY + game.tileSize > game.player.mapY - game.player.screenY &&
+                mapY - game.tileSize < game.player.mapY + game.player.screenY) {
+            graphics2D.drawImage(image, screenX, screenY, game.tileSize, game.tileSize, null);
         }
         graphics2D.drawImage(image, screenX, screenY, game.tileSize, game.tileSize, null);
     }

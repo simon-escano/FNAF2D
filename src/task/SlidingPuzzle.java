@@ -200,37 +200,34 @@ public class SlidingPuzzle extends JFrame {
     }
 
     public void puzzleTimer(){
-        timer = new Timer(1000, new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                second--;
-                if(second < 0 && minuteFlag == 0){
-                    minuteFlag = 1;
-                    second = 59;
-                    minute = 0;
-                }
-                if(minuteFlag == 0){
-                    if(second<10){
-                        counterLabel.setText(minute+":0"+second);
-                    }else{
-                        counterLabel.setText(minute+":"+second);
-                    }
+        timer = new Timer(1000, e -> {
+            second--;
+            if(second < 0 && minuteFlag == 0){
+                minuteFlag = 1;
+                second = 59;
+                minute = 0;
+            }
+            if(minuteFlag == 0){
+                if(second<10){
+                    counterLabel.setText(minute+":0"+second);
                 }else{
-                    if(second<10){
-                        counterLabel.setText("0"+second);
-                    }else{
-                        counterLabel.setText(""+second);
-                    }
+                    counterLabel.setText(minute+":"+second);
                 }
+            }else{
+                if(second<10){
+                    counterLabel.setText("0"+second);
+                }else{
+                    counterLabel.setText(""+second);
+                }
+            }
 
-                if(second < 0 && minute == 0){
-                    counterLabel.setText("You ran out of time!");
-                    JOptionPane.showMessageDialog(null, "You failed. Try again?");
-                    second = 15;
-                    minute = 1;
-                    minuteFlag = 0;
-                    shufflePuzzle();
-                }
+            if(second < 0 && minute == 0){
+                counterLabel.setText("You ran out of time!");
+                JOptionPane.showMessageDialog(null, "You failed. Try again?");
+                second = 15;
+                minute = 1;
+                minuteFlag = 0;
+                shufflePuzzle();
             }
         });
     }

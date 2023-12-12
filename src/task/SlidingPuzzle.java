@@ -22,9 +22,6 @@ public class SlidingPuzzle extends JFrame {
     public Font pixelFont;
     private final Sound sound = new Sound();
 
-    public static void main(String[] args) {
-
-    }
     public SlidingPuzzle() {
         setResizable(false);
         setTitle("Fix Bonnie");

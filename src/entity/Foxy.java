@@ -9,7 +9,7 @@ public class Foxy extends NPC {
         direction = "right";
         mapX = x * game.tileSize;
         mapY = y * game.tileSize;
-        speed = 4;
+        speed = 2;
         loadImage("/animatronics/foxy/foxy_walk");
     }
 }

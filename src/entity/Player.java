@@ -41,15 +41,15 @@ public class Player extends Entity {
         items = new Item[50];
         mapX = game.tileSize * 21;
         mapY = game.tileSize * 45;
-        speed = 4;
+        speed = 3;
         direction = "up";
     }
 
     public void update() {
         if (game.keyHandler.SHIFT) {
-            speed = 6;
+            speed = 5;
         } else {
-            speed = 4;
+            speed = 3;
         }
         if (game.keyHandler.W || game.keyHandler.S || game.keyHandler.A || game.keyHandler.D) {
             if (game.keyHandler.W) direction = "up";
@@ -94,7 +94,7 @@ public class Player extends Entity {
                 break;
             case "Fix Bonnie":
                 game.changeState(Game.States.TASK);
-                SwingUtilities.invokeLater(SlidingPuzzle::new);
+                SwingUtilities.invokeLater(() -> new SlidingPuzzle(game));
                 game.playSound(7);
                 break;
             case "Door":

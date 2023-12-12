@@ -23,7 +23,7 @@ public abstract class Entity {
 
     public Entity(Game game) {
         this.game = game;
-        solidArea = new Rectangle(game.tileSize / 6, (game.tileSize / 3) - 1, game.tileSize * 2/3, game.tileSize * 2/3);
+        solidArea = new Rectangle(6, 12, game.tileSize - 6, game.tileSize - 12);
     }
 
     public void loadImage(String filepath) {

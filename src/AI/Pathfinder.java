@@ -43,6 +43,14 @@ public class Pathfinder {
 
     public void setNodes(int startCol, int startRow, int goalCol, int goalRow) {
         resetNodes();
+        if (startCol > game.map.cols || startRow > game.map.rows) {
+            startCol /= 2;
+            startRow /= 2;
+        }
+        if (goalCol > game.map.cols || goalRow > game.map.rows) {
+            goalCol /= 2;
+            goalRow /= 2;
+        }
         startNode = nodes[startCol][startRow];
         currentNode = startNode;
         goalNode = nodes[goalCol][goalRow];

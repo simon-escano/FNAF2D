@@ -1,5 +1,6 @@
 package task;
 
+import main.Game;
 import main.Sound;
 
 import javax.imageio.ImageIO;
@@ -14,15 +15,18 @@ import java.util.Random;
 
 /*--------------------------------CHANGE FILES----------------------------------*/
 public class SlidingPuzzle extends JFrame {
+    Game game;
     private final JButton[][] puzzleButtons;
     private final JLabel counterLabel;
     private int emptyRow, emptyCol;
     private Timer timer;
     int second, minute, minuteFlag;
-    public Font pixelFont;
+    public Font font;
     private final Sound sound = new Sound();
 
-    public SlidingPuzzle() {
+    public SlidingPuzzle(Game game) {
+        this.game = game;
+        setUndecorated(true);
         setResizable(false);
         setTitle("Fix Bonnie");
         setBackground(Color.BLACK);
@@ -34,7 +38,7 @@ public class SlidingPuzzle extends JFrame {
         try{
             InputStream is = getClass().getResourceAsStream("/fonts/VCRosdNEUE.ttf");
             assert is != null;
-            pixelFont = Font.createFont(Font.TRUETYPE_FONT, is).deriveFont(40f);
+            font = Font.createFont(Font.TRUETYPE_FONT, is).deriveFont(40f);
         }catch (Exception e) {
             System.err.println("Font error!");
         }
@@ -63,7 +67,7 @@ public class SlidingPuzzle extends JFrame {
         }
 
         add(counterLabel, BorderLayout.NORTH);
-        counterLabel.setFont(pixelFont);
+        counterLabel.setFont(font);
         counterLabel.setBackground(Color.decode("#0D0D0D"));
         counterLabel.setOpaque(true);
         counterLabel.setForeground(Color.decode("#5F5085"));
@@ -169,6 +173,7 @@ public class SlidingPuzzle extends JFrame {
                     JOptionPane.showMessageDialog(SlidingPuzzle.this, "Congratulations! Puzzle solved!");
                     stopMusic();
                     dispose();
+                    game.changeState(Game.States.PLAY);
                 }
             }
         }

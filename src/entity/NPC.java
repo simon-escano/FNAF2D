@@ -3,12 +3,13 @@ package entity;
 import main.Game;
 import main.Sound;
 
+import java.awt.*;
 import java.util.Random;
 
 public abstract class NPC extends Entity {
     public String name;
     public boolean chase = false;
-    public boolean idle = true;
+    public boolean idle = false;
     Sound sound = new Sound();
     public NPC(Game game) {
         super(game);
@@ -63,6 +64,12 @@ public abstract class NPC extends Entity {
             }
         }
         checkChase();
+    }
+
+    @Override
+    public void draw(Graphics2D graphics2D) {
+        if (idle) spriteNum = 0;
+        super.draw(graphics2D);
     }
 
     public void searchPath(int goalCol, int goalRow) {
@@ -128,7 +135,7 @@ public abstract class NPC extends Entity {
                 loadImage("/animatronics/" + name + "/" + name +  "_chase");
             }
         }
-        if (chase && playerDistance() > 6) {
+        if (chase && playerDistance() > 8) {
             chase = false;
             speed = 2;
             loadImage("/animatronics/" + name + "/" + name +  "_walk");

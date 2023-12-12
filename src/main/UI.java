@@ -100,6 +100,7 @@ public class UI {
         graphics2D.fillRect(0, 0, game.screen.width, game.screen.height);
         image("/ui/static.png", 0, 0, game.screen.width, game.screen.height);
         text("TASK ONGOING", game.screen.height/2, 80, Color.white);
+        text("(alt + tab) to switch to task", game.screen.height/2 + game.tileSize/2, 30, Color.white);
     }
 
     public int centerText(String string) {

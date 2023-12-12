@@ -108,6 +108,7 @@ public class Game extends JPanel implements Runnable {
             player.draw(graphics2D);
             ui.draw(graphics2D);
         }
+
         Graphics graphics = getGraphics();
         graphics.drawImage(tempScreen, 0, 0, window.getWidth(), window.getHeight(), null);
         graphics.dispose();

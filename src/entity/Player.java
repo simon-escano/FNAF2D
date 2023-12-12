@@ -2,8 +2,10 @@ package entity;
 
 import item.Item;
 import main.Game;
+import task.SlidingPuzzle;
 
 import javax.imageio.ImageIO;
+import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
@@ -88,6 +90,11 @@ public class Player extends Entity {
                 items[numOfItems] = game.items[i];
                 numOfItems++;
                 game.items[i] = null;
+                game.playSound(7);
+                break;
+            case "Fix Bonnie":
+                game.changeState(Game.States.TASK);
+                SwingUtilities.invokeLater(SlidingPuzzle::new);
                 game.playSound(7);
                 break;
             case "Door":

@@ -1,24 +1,23 @@
 package entity;
 
 import main.Game;
+import main.Sound;
 
 import java.util.Random;
 
 public abstract class NPC extends Entity {
     public String name;
     public boolean chase = false;
+    public boolean idle = true;
+    Sound sound = new Sound();
     public NPC(Game game) {
         super(game);
     }
 
     public void setAction() {
         if (chase) {
-            loadImage("/animatronics/freddy/freddy_chase");
-            speed = 5;
             searchPath((game.player.mapX + game.player.solidArea.x) / game.tileSize, (game.player.mapY + game.player.solidArea.y) / game.tileSize);
         } else {
-            loadImage("/animatronics/freddy/freddy_walk");
-            speed = 2;
             actionLockCounter++;
             if (actionLockCounter < 120) return;
             Random random = new Random();
@@ -43,8 +42,9 @@ public abstract class NPC extends Entity {
     }
 
     public void update() {
-        setAction();
         checkCollision();
+        if (idle) return;
+        setAction();
         if (!collisionOn) {
             if (direction.equals("up")) mapY -= speed;
             if (direction.equals("down")) mapY += speed;
@@ -55,8 +55,10 @@ public abstract class NPC extends Entity {
         if (spriteCtr >= 32 - (speed * 3)) {
             spriteCtr = 0;
             if (spriteNum == 1) {
+                playSound(10);
                 spriteNum = 2;
             } else {
+                playSound(11);
                 spriteNum = 1;
             }
         }
@@ -117,18 +119,31 @@ public abstract class NPC extends Entity {
     }
 
     public void checkChase() {
-        int xDist = Math.abs(mapX - game.player.mapX);
-        int yDist = Math.abs(mapY - game.player.mapY);
-        int tileDistance = (xDist + yDist) / game.tileSize;
-
-        if (!chase && tileDistance < 4) {
+        if (!chase && playerDistance() < 4) {
             int i = new Random().nextInt(100) + 1;
             if (i > 50) {
                 chase = true;
+                speed = 4;
+                playSound(12);
+                loadImage("/animatronics/" + name + "/" + name +  "_chase");
             }
         }
-        if (chase && tileDistance > 6) {
+        if (chase && playerDistance() > 6) {
             chase = false;
+            speed = 2;
+            loadImage("/animatronics/" + name + "/" + name +  "_walk");
         }
+    }
+
+    public void playSound(int i) {
+        sound.setFile(i);
+        float volume = (float) -(Math.pow(playerDistance(), 2)/3) + 6;
+        if (volume < -80) volume = -80;
+        sound.changeVolume(volume);
+        sound.play();
+    }
+
+    public int playerDistance() {
+        return (Math.abs(mapX - game.player.mapX) + Math.abs(mapY - game.player.mapY)) / game.tileSize;
     }
 }

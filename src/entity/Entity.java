@@ -16,13 +16,14 @@ public abstract class Entity {
     public String direction;
     public int spriteCtr = 0;
     public int spriteNum = 1;
-    public Rectangle solidArea = new Rectangle(0, 0, 48, 48);
+    public Rectangle solidArea;
     public int solidAreaDefaultX, solidAreaDefaultY;
     public boolean collisionOn = false;
     public int actionLockCounter = 0;
 
     public Entity(Game game) {
         this.game = game;
+        solidArea = new Rectangle(game.tileSize / 6, (game.tileSize / 3) - 1, game.tileSize * 2/3, game.tileSize * 2/3);
     }
 
     public void loadImage(String filepath) {

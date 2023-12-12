@@ -27,6 +27,7 @@ public class ItemManager {
         addItem(new Door(39, 14, game));
         addItem(new Door(39, 20, game));
         addItem(new Door(7, 10, game));
+        addItem(new TaskStarter("Fix Bonnie", 12, 40, game));
     }
     
     public void addItem(Item item) {

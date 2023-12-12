@@ -5,8 +5,8 @@ import main.Game;
 public class Foxy extends NPC {
     public Foxy(Game game, int x, int y) {
         super(game);
-        name = "Foxy";
-        direction = "down";
+        name = "foxy";
+        direction = "right";
         mapX = x * game.tileSize;
         mapY = y * game.tileSize;
         speed = 4;

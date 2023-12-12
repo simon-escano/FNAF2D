@@ -11,6 +11,7 @@ import tile.TileManager;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.util.Objects;
 
 public class Game extends JPanel implements Runnable {
     final int originalTileSize = 16;
@@ -19,7 +20,8 @@ public class Game extends JPanel implements Runnable {
 
     int FPS = 60;
 
-    public final Dimensions screen = new Dimensions(10, 6, this);
+    public boolean fullscreen = false;
+    public final Dimensions screen = new Dimensions(16, 9, this);
     public final Dimensions map = new Dimensions(46, 48, this);
     BufferedImage tempScreen;
     Graphics2D graphics2D;
@@ -39,7 +41,7 @@ public class Game extends JPanel implements Runnable {
     public NPC[] npc;
     public static String deathCause;
 
-    public enum States { TITLE, PLAY, PAUSE, GAME_OVER }
+    public enum States { TITLE, OPTIONS, PLAY, PAUSE, GAME_OVER, TASK }
     public States state;
     public Game() {
         System.out.println("Screen size: " + screen.cols * tileSize + " x " + screen.rows * tileSize);
@@ -74,7 +76,6 @@ public class Game extends JPanel implements Runnable {
         loopSound(3);
         itemManager.loadItems();
         NPCManager.loadNPC();
-        setFullscreen();
     }
 
     public void setFullscreen() {
@@ -83,13 +84,17 @@ public class Game extends JPanel implements Runnable {
         gd.setFullScreenWindow(window);
     }
 
+    public void exitFullScreen() {
+        GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+        GraphicsDevice gd = ge.getDefaultScreenDevice();
+        gd.setFullScreenWindow(null);
+        window.setLocationRelativeTo(null);
+    }
+
     public void update() {
-        switch (state) {
-            case PLAY -> {
-                player.update();
-                NPCManager.update();
-            }
-            case PAUSE -> {}
+        if (state == States.PLAY) {
+            player.update();
+            NPCManager.update();
         }
     }
 
@@ -130,8 +135,9 @@ public class Game extends JPanel implements Runnable {
                 stopSound();
                 loopSound(0);
                 break;
-            case PAUSE:
+            case PAUSE, OPTIONS:
                 stopSound();
+                playSound(5);
                 break;
             case TITLE:
                 restart();
@@ -140,8 +146,14 @@ public class Game extends JPanel implements Runnable {
                 break;
             case GAME_OVER:
                 restart();
+                stopSound();
+                loopSound(9);
+                break;
+            case TASK:
+                stopSound();
                 break;
         }
+        ui.command = 0;
     }
 
     public void restart() {
@@ -155,7 +167,7 @@ public class Game extends JPanel implements Runnable {
         window = new JFrame();
         window.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         window.setResizable(false);
-        window.setTitle("Five Nights at Freddy's 2D");
+        window.setTitle("Night Shift at Freddy's");
         window.setUndecorated(true);
 
         Game game = new Game();

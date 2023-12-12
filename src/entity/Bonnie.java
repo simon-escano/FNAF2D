@@ -5,8 +5,8 @@ import main.Game;
 public class Bonnie extends NPC {
     public Bonnie(Game game, int x, int y) {
         super(game);
-        name = "Bonnie";
-        direction = "down";
+        name = "bonnie";
+        direction = "right";
         mapX = x * game.tileSize;
         mapY = y * game.tileSize;
         speed = 2;

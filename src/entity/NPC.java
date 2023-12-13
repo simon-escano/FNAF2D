@@ -9,7 +9,7 @@ import java.util.Random;
 public abstract class NPC extends Entity {
     public String name;
     public boolean chase = false;
-    public boolean idle = false;
+    public boolean idle = true;
     Sound sound = new Sound();
     public NPC(Game game) {
         super(game);

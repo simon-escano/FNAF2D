@@ -6,12 +6,12 @@ import entity.NPCManager;
 import entity.Player;
 import item.Item;
 import item.ItemManager;
+import task.Task;
 import tile.TileManager;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.util.Objects;
 
 public class Game extends JPanel implements Runnable {
     final int originalTileSize = 16;
@@ -31,7 +31,7 @@ public class Game extends JPanel implements Runnable {
     Sound sbg = new Sound();
     Sound sfx = new Sound();
     public TileManager tileManager = new TileManager(this);
-    ItemManager itemManager = new ItemManager(this);
+    public ItemManager itemManager = new ItemManager(this);
     NPCManager NPCManager = new NPCManager(this);
     public CollisionChecker collisionChecker = new CollisionChecker(this);
     public KeyHandler keyHandler = new KeyHandler(this);
@@ -39,6 +39,8 @@ public class Game extends JPanel implements Runnable {
     public Player player = new Player(this);
     public Item[] items;
     public NPC[] npc;
+    public Task task;
+    public int taskNumber = 0;
     public static String deathCause;
 
     public enum States { TITLE, OPTIONS, PLAY, PAUSE, GAME_OVER, TASK }
@@ -169,7 +171,6 @@ public class Game extends JPanel implements Runnable {
         window.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         window.setResizable(false);
         window.setTitle("Night Shift at Freddy's");
-        window.setUndecorated(true);
 
         Game game = new Game();
         window.add(game);

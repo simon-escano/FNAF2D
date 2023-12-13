@@ -21,7 +21,7 @@ public abstract class Item {
     }
 
     public Item(int mapX, int mapY, Game game) {
-        this(mapX, mapY, 0, 0, 48, 48, game);
+        this(mapX, mapY, 0, 0, game.tileSize, game.tileSize, game);
     }
 
     public void draw(Graphics2D graphics2D, Game game) {

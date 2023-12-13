@@ -19,6 +19,6 @@ public class GenItem extends Item {
     }
 
     public GenItem(String image, String name, int mapX, int mapY, Game game) {
-        this(image, name, mapX, mapY, 0, 0, 48, 48, game);
+        this(image, name, mapX, mapY, 0, 0, game.tileSize, game.tileSize, game);
     }
 }

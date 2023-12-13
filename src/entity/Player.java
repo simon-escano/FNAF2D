@@ -1,11 +1,10 @@
 package entity;
 
-import item.Item;
+import item.*;
 import main.Game;
-import task.SlidingPuzzle;
+import task.*;
 
 import javax.imageio.ImageIO;
-import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
@@ -46,11 +45,7 @@ public class Player extends Entity {
     }
 
     public void update() {
-        if (game.keyHandler.SHIFT) {
-            speed = 5;
-        } else {
-            speed = 3;
-        }
+        speed = game.keyHandler.SHIFT ? 5 : 3;
         if (game.keyHandler.W || game.keyHandler.S || game.keyHandler.A || game.keyHandler.D) {
             if (game.keyHandler.W) direction = "up";
             if (game.keyHandler.S) direction = "down";
@@ -59,8 +54,7 @@ public class Player extends Entity {
 
             collisionOn = false;
             game.collisionChecker.checkTile(this);
-
-            pickUpItem(game.collisionChecker.checkItem(this, true));
+            game.collisionChecker.checkItem(this, true);
 
             if (!collisionOn) {
                 if (direction.equals("up")) mapY -= speed;
@@ -85,22 +79,65 @@ public class Player extends Entity {
 
     public void pickUpItem(int i) {
         if (i == -1) return;
-        switch (game.items[i].name) {
-            case "Mask":
-                items[numOfItems] = game.items[i];
-                numOfItems++;
-                game.items[i] = null;
-                game.playSound(7);
-                break;
-            case "Fix Bonnie":
-                game.changeState(Game.States.TASK);
-                SwingUtilities.invokeLater(() -> new SlidingPuzzle(game));
-                game.playSound(7);
-                break;
-            case "Door":
-                game.items[i] = null;
-                game.playSound(8);
-                break;
+        Item item = game.items[i];
+        if (item instanceof Mask) {
+            items[numOfItems] = item;
+            game.items[i] = null;
+            numOfItems++;
+            game.playSound(7);
+        } else if (item instanceof TaskStarter) {
+            game.changeState(Game.States.TASK);
+            game.playSound(7);
+            switch (item.name) {
+                case "Fix Bonnie" -> game.task = new FixBonnie(game);
+                case "Balloon Pop" -> game.task = new BalloonPop(game);
+                case "Fix Lights" -> game.task = new FixLights("/tasks/fix_lights/dot1.txt", game);
+                case "Foxy Run" -> game.task = new FoxyRun(game);
+                case "Whack A Freddy" -> game.task = new WhackAFreddy(game);
+                case "Fix Vents" -> game.task = new FixVents(game);
+            }
+        } else if (item instanceof Door) {
+            game.playSound(8);
+            ((Door) item).open = !((Door) item).open;
+            item.collision = !((Door) item).open;
+            if (((Door) item).open) {
+                try {
+                    item.image = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/tiles/air.png")));
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            } else {
+                try {
+                    item.image = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/items/door.png")));
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        }
+    }
+
+    public void interactItem() {
+        Rectangle nextTile = switch (game.player.direction) {
+            case "up" ->
+                    new Rectangle(game.player.mapX, (game.player.mapY) - game.tileSize, game.tileSize, game.tileSize);
+            case "down" ->
+                    new Rectangle(game.player.mapX, (game.player.mapY) + game.tileSize, game.tileSize, game.tileSize);
+            case "left" ->
+                    new Rectangle((game.player.mapX) - game.tileSize, game.player.mapY, game.tileSize, game.tileSize);
+            case "right" ->
+                    new Rectangle((game.player.mapX) + game.tileSize, game.player.mapY, game.tileSize, game.tileSize);
+            default -> null;
+        };
+
+        for (int i = 0; i < game.items.length; i++) {
+            Item item = game.items[i];
+            assert nextTile != null;
+            if (item != null) {
+                Rectangle itemTile = new Rectangle(item.mapX, item.mapY, game.tileSize, game.tileSize);
+                if (itemTile.intersects(nextTile) || new Rectangle(mapX, mapY, game.tileSize, game.tileSize).intersects(itemTile)) {
+                    pickUpItem(i);
+                }
+            }
         }
     }
 

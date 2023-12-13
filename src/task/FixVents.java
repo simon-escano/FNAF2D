@@ -1,7 +1,6 @@
 package task;
 
 import main.Game;
-import main.Sound;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -13,47 +12,44 @@ import java.io.InputStream;
 import java.util.Objects;
 import java.util.Random;
 
-/*--------------------------------CHANGE FILES----------------------------------*/
-public class SlidingPuzzle extends JFrame {
-    Game game;
+public class FixVents extends Task implements Counter {
     private final JButton[][] puzzleButtons;
-    private final JLabel counterLabel;
+    private final JLabel counterLabel1;
     private int emptyRow, emptyCol;
     private Timer timer;
-    int second, minute, minuteFlag;
-    public Font font;
-    private final Sound sound = new Sound();
+    int second;
+    int minuteFlag;
+    public Font pixelFont;
 
-    public SlidingPuzzle(Game game) {
-        this.game = game;
-        setUndecorated(true);
-        setResizable(false);
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(() -> new FixVents(new Game()));
+    }
+
+    public FixVents(Game game) {
+        super(game, "Fix Vents", 750, 750);
         setTitle("Fix Bonnie");
-        setBackground(Color.BLACK);
         setSize(750, 750);
-        setLocationRelativeTo(null);
-        setUndecorated(true);
 
         //DO NOT CHANGE
         try{
             InputStream is = getClass().getResourceAsStream("/fonts/VCRosdNEUE.ttf");
             assert is != null;
-            font = Font.createFont(Font.TRUETYPE_FONT, is).deriveFont(40f);
+            pixelFont = Font.createFont(Font.TRUETYPE_FONT, is).deriveFont(40f);
         }catch (Exception e) {
-            System.err.println("Font error!");
+            System.out.println("Font error!");
         }
 
         puzzleButtons = new JButton[3][3];
-        counterLabel = new JLabel();
-        second = 15;
-        minute = 1;
+        counterLabel1 = new JLabel();
+        second = 60;
+        //minute = 0;
         minuteFlag = 0;
-        puzzleTimer();
+        gameTimer();
         timer.start();
 
         JPanel puzzlePanel = new JPanel(new GridLayout(3, 3));
 
-        initializePuzzle();
+        gameInitialize();
         shufflePuzzle();
 
         for (JButton[] puzzleButton : puzzleButtons) {
@@ -66,29 +62,31 @@ public class SlidingPuzzle extends JFrame {
             }
         }
 
-        add(counterLabel, BorderLayout.NORTH);
-        counterLabel.setFont(font);
-        counterLabel.setBackground(Color.decode("#0D0D0D"));
-        counterLabel.setOpaque(true);
-        counterLabel.setForeground(Color.decode("#5F5085"));
-        counterLabel.setHorizontalAlignment(JLabel.CENTER);
+        add(counterLabel1, BorderLayout.NORTH);
+        counterLabel1.setFont(pixelFont);
+        counterLabel1.setBackground(Color.decode("#0D0D0D"));
+        counterLabel1.setOpaque(true);
+        counterLabel1.setForeground(Color.decode("#DACF99"));
+        counterLabel1.setHorizontalAlignment(JLabel.CENTER);
         //Uses Factory Pattern?? JAJAJA
-        counterLabel.setBorder(BorderFactory.createEmptyBorder(10, 0, 0, 0));
-        counterLabel.setBounds(300, 320, 200, 200);
+        counterLabel1.setBorder(BorderFactory.createEmptyBorder(10, 0, 0, 0));
+        counterLabel1.setBounds(300, 320, 200, 200);
         add(puzzlePanel, BorderLayout.CENTER);
         setVisible(true);
     }
 
-    private void initializePuzzle() {
+    public void gameInitialize() {
         playMusic(13);
         int count = 1;
+        String imgName;
         for (int i = 0; i < puzzleButtons.length; i++) {
             for (int j = 0; j < puzzleButtons[i].length; j++) {
                 int number = i * puzzleButtons.length + j + 1;
                 puzzleButtons[i][j] = new JButton(String.valueOf(number));
-                /*----------------CHANGE imgName TO A MORE SUITABLE IMAGE------------------------------*/
+
                 try{
-                    Image img = ImageIO.read(Objects.requireNonNull(getClass().getResource("/pictures/bonnieCut" + count + ".jpg")));
+                    imgName = "/tasks/fix_vents/chica_vent_" + count + ".jpg";
+                    Image img = ImageIO.read(Objects.requireNonNull(getClass().getResource(imgName)));
                     Image newImg = img.getScaledInstance(260, 260, java.awt.Image.SCALE_SMOOTH);
                     puzzleButtons[i][j].setIcon(new ImageIcon(newImg));
                     puzzleButtons[i][j].setBorderPainted(true);
@@ -96,8 +94,7 @@ public class SlidingPuzzle extends JFrame {
                         count++;
                     }
                 }catch (Exception e){
-                    e.printStackTrace();
-                    System.err.println("Picture error!");
+                    System.out.println("Picture error!");
                 }
             }
         }
@@ -105,6 +102,7 @@ public class SlidingPuzzle extends JFrame {
         emptyCol = puzzleButtons[0].length - 1;
         puzzleButtons[emptyRow][emptyCol].setText("");
     }
+
 
     private void shufflePuzzle() {
         Random rand = new Random();
@@ -168,12 +166,9 @@ public class SlidingPuzzle extends JFrame {
                 emptyCol = col;
 
                 playSE(14);
-                
+
                 if (isPuzzleSolved()) {
-                    JOptionPane.showMessageDialog(SlidingPuzzle.this, "Congratulations! Puzzle solved!");
-                    stopMusic();
-                    dispose();
-                    game.changeState(Game.States.PLAY);
+                    win();
                 }
             }
         }
@@ -199,56 +194,34 @@ public class SlidingPuzzle extends JFrame {
                     }
                 }
             }
-
             return true;
         }
     }
 
-    public void puzzleTimer(){
+    public void gameTimer(){
         timer = new Timer(1000, e -> {
             second--;
-            if(second < 0 && minuteFlag == 0){
-                minuteFlag = 1;
-                second = 59;
-                minute = 0;
-            }
-            if(minuteFlag == 0){
-                if(second<10){
-                    counterLabel.setText(minute+":0"+second);
-                }else{
-                    counterLabel.setText(minute+":"+second);
-                }
-            }else{
-                if(second<10){
-                    counterLabel.setText("0"+second);
-                }else{
-                    counterLabel.setText(""+second);
-                }
-            }
-
-            if(second < 0 && minute == 0){
-                counterLabel.setText("You ran out of time!");
-                JOptionPane.showMessageDialog(null, "You failed. Try again?");
-                second = 15;
-                minute = 1;
-                minuteFlag = 0;
-                shufflePuzzle();
+            counterLabel1.setText(""+second);
+            if(second == 0){
+                gameOver();
             }
         });
     }
 
-    public void playMusic(int i){
-        sound.setFile(i);
-        sound.play();
-        sound.loop();
+    public void win(){
+        JOptionPane.showMessageDialog(FixVents.this, "Congratulations! Puzzle solved!");
+        close();
+        removeTask();
     }
 
-    public void stopMusic(){
-        sound.stop();
+    @Override
+    public void gameRestart() {
+        shufflePuzzle();
     }
-
-    public void playSE(int i){
-        sound.setFile(i);
-        sound.play();
+    public void gameOver() {
+        counterLabel1.setText("You ran out of time!");
+        JOptionPane.showMessageDialog(null, "You failed. Try again?");
+        second = 59;
+        shufflePuzzle();
     }
 }

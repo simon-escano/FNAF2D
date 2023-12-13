@@ -76,9 +76,6 @@ public class UI {
     }
 
     public void drawPlay() {
-        image("/items/mask.png", game.tileSize/2, game.tileSize/2, game.tileSize, game.tileSize);
-        graphics2D.drawString("x " + game.player.numOfItems, 120, 100);
-        text("x " + game.player.numOfItems, 120, 100, 30, Color.white);
     }
 
     public void drawPause() {

@@ -27,6 +27,15 @@ public class Sound {
         soundURL[12] = getClass().getResource("/sound/chase.wav");
         soundURL[13] = getClass().getResource("/sound/bgm1.wav");
         soundURL[14] = getClass().getResource("/sound/slide.wav");
+        soundURL[15] = getClass().getResource("/sound/pop.wav");
+        soundURL[16] = getClass().getResource("/sound/bgm2.wav");
+        soundURL[17] = getClass().getResource("/sound/electricity.wav");
+        soundURL[18] = getClass().getResource("/sound/bgm3.wav");
+        soundURL[19] = getClass().getResource("/sound/jump.wav");
+        soundURL[20] = getClass().getResource("/sound/bgm4.wav");
+        soundURL[21] = getClass().getResource("/sound/hit.wav");
+        soundURL[22] = getClass().getResource("/sound/wrong.wav");
+        soundURL[23] = getClass().getResource("/sound/bgm5.wav");
     }
 
     public void setFile(int i) {

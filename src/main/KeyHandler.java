@@ -1,12 +1,14 @@
 package main;
 
+import javax.imageio.ImageIO;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.util.Objects;
 
 public class KeyHandler implements KeyListener {
     Game game;
 
-    public boolean W, S, A, D, E, T = false, SHIFT;
+    public boolean W, S, A, D, E, T = false, F = false, SHIFT;
 
     public KeyHandler(Game game) {
         this.game = game;
@@ -89,6 +91,24 @@ public class KeyHandler implements KeyListener {
                 if (code == KeyEvent.VK_T) {
                     T = !T;
                     game.playSound(5);
+                }
+                if (code == KeyEvent.VK_F) {
+                    if (!game.lightsOff) return;
+                    F = !F;
+                    game.playSound(25);
+                    if (F) {
+                        try {
+                            game.player.fov = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/player/fov_flashlight.png")));
+                        } catch (Exception f) {
+                            System.err.println("Player flashlight fov image not found.");
+                        }
+                    } else {
+                        try {
+                            game.player.fov = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/player/fov_lights_out.png")));
+                        } catch (Exception f) {
+                            System.err.println("Player fov image not found.");
+                        }
+                    }
                 }
                 if (code == KeyEvent.VK_ESCAPE) game.changeState(Game.States.OPTIONS);
                 if (code == KeyEvent.VK_E) {

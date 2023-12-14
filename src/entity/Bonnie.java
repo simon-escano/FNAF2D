@@ -10,6 +10,6 @@ public class Bonnie extends NPC {
         mapX = x * game.tileSize;
         mapY = y * game.tileSize;
         speed = 2;
-        loadImage("/animatronics/bonnie/bonnie_walk");
+        loadImage("/npc/bonnie/bonnie_walk");
     }
 }

@@ -3,6 +3,7 @@ package task;
 import item.TaskStarter;
 import main.Game;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.io.File;
@@ -147,6 +148,19 @@ public class BalloonPop extends Task implements Counter {
         timer.stop();
         close();
         removeTask();
+        game.playSound(24);
+        game.lightsOff = true;
+        try {
+            game.player.fov = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/player/fov_lights_out.png")));
+        } catch (Exception e) {
+            System.err.println("Player lights out fov image not found.");
+        }
+        game.taskInfo = new ArrayList<>();
+        game.taskInfo.add("(Uh oh... they've noticed you.)");
+        game.taskInfo.add("Check the backstage to fix the wiring");
+        game.taskInfo.add("in the junction box.");
+        game.taskInfo.add("(press F to use your flashlight)");
+        game.taskPaneHeight += game.tileSize/3;
         game.itemManager.addItem(new TaskStarter("Fix Lights", 1, 9, game));
     }
 }

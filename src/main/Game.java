@@ -12,6 +12,7 @@ import tile.TileManager;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 
 public class Game extends JPanel implements Runnable {
     final int originalTileSize = 16;
@@ -40,8 +41,10 @@ public class Game extends JPanel implements Runnable {
     public Item[] items;
     public NPC[] npc;
     public Task task;
-    public int taskNumber = 0;
+    public ArrayList<String> taskInfo = new ArrayList<>();
+    public int taskPaneHeight;
     public static String deathCause;
+    public boolean lightsOff = false;
 
     public enum States { TITLE, OPTIONS, PLAY, PAUSE, GAME_OVER, TASK }
     public States state;
@@ -74,10 +77,13 @@ public class Game extends JPanel implements Runnable {
     }
 
     public void setup() {
+        taskPaneHeight = tileSize * 2;
+        taskInfo.add("Find the storage room to fix Bonnie.");
+        taskInfo.add("(press SHIFT to sprint)");
         state = States.TITLE;
+        loopSound(3);
         NPCManager.loadNPC();
         itemManager.loadItems();
-        loopSound(3);
     }
 
     public void setFullscreen() {
@@ -136,7 +142,7 @@ public class Game extends JPanel implements Runnable {
         this.state = state;
         switch (state) {
             case PLAY:
-                stopSound();
+                if (sbg.clip != null) stopSound();
                 loopSound(0);
                 break;
             case PAUSE, OPTIONS:
@@ -145,7 +151,6 @@ public class Game extends JPanel implements Runnable {
                 break;
             case TITLE:
                 restart();
-                stopSound();
                 loopSound(3);
                 break;
             case GAME_OVER:

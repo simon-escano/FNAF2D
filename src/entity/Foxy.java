@@ -10,6 +10,6 @@ public class Foxy extends NPC {
         mapX = x * game.tileSize;
         mapY = y * game.tileSize;
         speed = 2;
-        loadImage("/animatronics/foxy/foxy_walk");
+        loadImage("/npc/foxy/foxy_walk");
     }
 }

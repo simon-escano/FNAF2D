@@ -54,6 +54,7 @@ public class Player extends Entity {
             collisionOn = false;
             game.collisionChecker.checkTile(this);
             game.collisionChecker.checkItem(this, true);
+            game.collisionChecker.checkEntity(this, game.npc);
 
             if (!collisionOn) {
                 if (direction.equals("up")) mapY -= speed;

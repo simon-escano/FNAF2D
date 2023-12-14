@@ -82,6 +82,19 @@ public class UI {
     }
 
     public void drawPlay() {
+        pane(game.tileSize/2, game.tileSize/2, game.tileSize * 5 + game.tileSize/2, game.taskPaneHeight);
+        int x = game.tileSize;
+        int y = game.tileSize + game.tileSize/4;
+        text("TASK:", x, y, 26, new Color(161, 141, 214));
+        y += game.tileSize/2 - game.tileSize/16;
+        for (String line : game.taskInfo) {
+            if (line.startsWith("(")) {
+                text(line, x, y, 20, new Color(83, 91, 100));
+            } else {
+                text(line, x, y, 20, Color.white);
+            }
+            y += game.tileSize/3;
+        }
     }
 
     public void drawLocation() {
@@ -115,10 +128,10 @@ public class UI {
     }
 
     public void text(String string, int x, int y, int size, Color color) {
+        graphics2D.setFont(graphics2D.getFont().deriveFont(Font.PLAIN, size));
         graphics2D.setColor(Color.black);
         graphics2D.drawString(string, x + 3, y + 3);
         graphics2D.setColor(color);
-        graphics2D.setFont(graphics2D.getFont().deriveFont(Font.PLAIN, size));
         graphics2D.drawString(string, x, y);
     }
 

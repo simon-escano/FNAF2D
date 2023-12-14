@@ -16,6 +16,7 @@ public class NPCManager {
         game.npc[1] = new Bonnie(game, 11, 40);
         game.npc[2] = new Chica(game, 23, 4);
         game.npc[3] = new Foxy(game, 5, 28);
+        game.npc[4] = new BurgerKingGuy(game, 42, 9);
     }
 
     public void update() {

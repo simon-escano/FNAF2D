@@ -12,6 +12,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.Objects;
 import java.util.Random;
 
@@ -31,7 +32,6 @@ public class FixBonnie extends Task implements Counter {
 
     public FixBonnie(Game game) {
         super(game, "Fix Bonnie", 750, 750);
-
         try {
             InputStream is = getClass().getResourceAsStream("/fonts/VCRosdNEUE.ttf");
             assert is != null;
@@ -205,7 +205,7 @@ public class FixBonnie extends Task implements Counter {
     @Override
     public void gameOver(){
         counterLabel.setText("You ran out of time!");
-        JOptionPane.showMessageDialog(null, "You failed. Try again?");
+        JOptionPane.showMessageDialog(FixBonnie.this, "You failed. Try again?");
         second = 15;
         minute = 1;
         minuteFlag = 0;
@@ -216,7 +216,13 @@ public class FixBonnie extends Task implements Counter {
     public void win() {
         JOptionPane.showMessageDialog(FixBonnie.this, "Congratulations! Puzzle solved!");
         close();
+        timer.stop();
         removeTask();
+        game.taskInfo = new ArrayList<>();
+        game.taskPaneHeight = (game.tileSize * 5) / 2;
+        game.taskInfo.add("Go to the arcade area to see if");
+        game.taskInfo.add("the Balloon Pop Arcade is working");
+        game.taskInfo.add("(WARNING! They are awake...)");
         game.npc[1] = new Bonnie(game, 19, 4);
         game.itemManager.addItem(new TaskStarter("Balloon Pop", 28, 27, game));
         for (NPC animatronic : game.npc) {

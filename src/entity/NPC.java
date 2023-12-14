@@ -130,24 +130,44 @@ public abstract class NPC extends Entity {
             int i = new Random().nextInt(100) + 1;
             if (i > 50) {
                 chase = true;
-                speed = 4;
+                speed = 3;
+                if (this instanceof Foxy) {
+                    speed = 4;
+                }
                 playSound(12);
-                loadImage("/animatronics/" + name + "/" + name +  "_chase");
+                loadImage("/npc/" + name + "/" + name +  "_chase");
             }
         }
         if (chase && playerDistance() > 8) {
-            chase = false;
-            speed = 2;
-            loadImage("/animatronics/" + name + "/" + name +  "_walk");
+            if (this instanceof Foxy) {
+                chase = false;
+                speed = 2;
+                loadImage("/npc/" + name + "/" + name +  "_walk");
+            } else if (playerDistance() > 10) {
+                chase = false;
+                speed = 2;
+                loadImage("/npc/" + name + "/" + name +  "_walk");
+            }
         }
     }
 
     public void playSound(int i) {
         sound.setFile(i);
+        surroundSound();
+        sound.play();
+    }
+
+    public void loopSound(int i ) {
+        sound.setFile(i);
+        surroundSound();
+        sound.play();
+        sound.loop();
+    }
+
+    public void surroundSound() {
         float volume = (float) -(Math.pow(playerDistance(), 2)/3) + 6;
         if (volume < -80) volume = -80;
         sound.changeVolume(volume);
-        sound.play();
     }
 
     public int playerDistance() {

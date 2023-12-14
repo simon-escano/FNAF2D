@@ -10,6 +10,6 @@ public class Chica extends NPC {
         mapX = x * game.tileSize;
         mapY = y * game.tileSize;
         speed = 2;
-        loadImage("/animatronics/chica/chica_walk");
+        loadImage("/npc/chica/chica_walk");
     }
 }

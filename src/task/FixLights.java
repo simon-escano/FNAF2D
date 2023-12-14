@@ -5,6 +5,7 @@ import main.Game;
 
 import java.awt.*;
 import java.awt.event.*;
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.JOptionPane;
 import java.util.*;
@@ -46,6 +47,11 @@ public class FixLights extends Task implements MouseMotionListener, MouseListene
     }
     public FixLights(String level, Game game){
         super(game, "Fix Lights", 750, 750);
+        try {
+            game.player.fov = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/player/fov.png")));
+        } catch (Exception e) {
+            System.err.println("Player flashlight fov image not found.");
+        }
         setBackground(Color.decode("#0D0D0D"));
         playMusic(18);
 
@@ -314,6 +320,17 @@ public class FixLights extends Task implements MouseMotionListener, MouseListene
         JOptionPane.showMessageDialog(FixLights.this,"Successfully fixed lights!");
         close();
         removeTask();
+        game.lightsOff = false;
+        try {
+            game.player.fov = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/player/fov.png")));
+        } catch (Exception e) {
+            System.err.println("Player fov image not found.");
+        }
+        game.taskInfo = new ArrayList<>();
+        game.taskInfo.add("Go back to the arcade to check if the");
+        game.taskInfo.add("Foxy Run arcade machine is working");
+        game.taskPaneHeight = game.tileSize * 2;
+        game.playSound(26);
         game.itemManager.addItem(new TaskStarter("Foxy Run", 25, 31, game));
     }
 

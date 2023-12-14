@@ -193,6 +193,9 @@ public class FoxyRun extends Task implements ActionListener, KeyListener {
         timer.stop();
         close();
         removeTask();
+        game.taskInfo = new ArrayList<>();
+        game.taskInfo.add("You're getting good at this!");
+        game.taskInfo.add("Now play some Whack-a-Freddy.");
         game.itemManager.addItem(new TaskStarter("Whack A Freddy", 20, 29, game));
     }
 

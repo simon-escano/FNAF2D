@@ -10,6 +10,6 @@ public class Freddy extends NPC {
         mapX = x * game.tileSize;
         mapY = y * game.tileSize;
         speed = 2;
-        loadImage("/animatronics/freddy/freddy_walk");
+        loadImage("/npc/freddy/freddy_walk");
     }
 }

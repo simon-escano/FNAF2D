@@ -211,6 +211,7 @@ public class FixVents extends Task implements Counter {
     public void win(){
         JOptionPane.showMessageDialog(FixVents.this, "Congratulations! Puzzle solved!");
         close();
+        timer.stop();
         removeTask();
     }
 
@@ -220,7 +221,7 @@ public class FixVents extends Task implements Counter {
     }
     public void gameOver() {
         counterLabel1.setText("You ran out of time!");
-        JOptionPane.showMessageDialog(null, "You failed. Try again?");
+        JOptionPane.showMessageDialog(FixVents.this, "You failed. Try again?");
         second = 59;
         shufflePuzzle();
     }

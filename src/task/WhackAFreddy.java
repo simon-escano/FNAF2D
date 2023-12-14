@@ -11,6 +11,7 @@ import java.awt.event.ActionListener;
 import java.awt.image.ImagingOpException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.Objects;
 import java.util.Random;
 import java.awt.event.MouseAdapter;
@@ -209,6 +210,12 @@ public class WhackAFreddy extends Task implements Counter {
         timer.stop();
         close();
         removeTask();
+        game.taskInfo = new ArrayList<>();
+        game.taskInfo.add("Cool! The last task for your shift is");
+        game.taskInfo.add("to fix the vents in the kitchen. Then, you");
+        game.taskInfo.add("get to go home!");
+        game.taskInfo.add("(as long as you don't get eaten out :D)");
+        game.taskPaneHeight = ((game.tileSize * 5) / 2 ) + game.tileSize/3;
         game.itemManager.addItem(new TaskStarter("Fix Vents", 34, 36, game));
     }
 

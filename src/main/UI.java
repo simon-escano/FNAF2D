@@ -25,10 +25,16 @@ public class UI {
     public void draw(Graphics2D graphics2D) {
         this.graphics2D = graphics2D;
         graphics2D.setFont(font);
+        graphics2D.drawImage(game.player.fov, 0, 0, game.screen.width, game.screen.height, null);
         switch (game.state) {
             case TITLE -> drawTitle();
             case OPTIONS -> drawOptions();
-            case PLAY -> drawPlay();
+            case PLAY -> {
+                drawPlay();
+                if (game.keyHandler.T) {
+                    drawLocation();
+                }
+            }
             case PAUSE -> drawPause();
             case GAME_OVER -> drawGameOver();
             case TASK -> drawTask();
@@ -78,6 +84,10 @@ public class UI {
     public void drawPlay() {
     }
 
+    public void drawLocation() {
+        text("Location: (" + game.player.mapX / game.tileSize + ", " + game.player.mapY / game.tileSize + ")", game.tileSize/2, game.screen.height - game.tileSize, 20, Color.white);
+    }
+
     public void drawPause() {
         graphics2D.setColor(new Color(0, 0, 0, 150));
         graphics2D.fillRect(0, 0, game.screen.width, game.screen.height);
@@ -120,7 +130,9 @@ public class UI {
     public void image(String filepath, int x, int y, int width, int height) {
         try {
             graphics2D.drawImage(ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream(filepath))), x, y, width, height, null);
-        } catch (IOException ignored) {}
+        } catch (Exception e) {
+            System.err.println("Image [" + filepath + "] not found.");
+        }
     }
 
     public void pane(int x, int y, int width, int height) {

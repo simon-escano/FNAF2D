@@ -13,8 +13,8 @@ public class GenItem extends Item {
         this.name = name;
         try {
             this.image = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/items/" + image)));
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+        } catch (Exception e) {
+            System.err.println("Image for GenItem: " + name + " not found.");
         }
     }
 

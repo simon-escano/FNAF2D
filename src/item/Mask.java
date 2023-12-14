@@ -12,8 +12,8 @@ public class Mask extends Item {
         name = "Mask";
         try {
             image = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/items/mask.png")));
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+        } catch (Exception e) {
+            System.err.println("Image for Mask not found.");
         }
     }
 }

@@ -40,8 +40,8 @@ public abstract class Entity {
             right1 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream(filepath + "_right_1.png")));
             right2 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream(filepath + "_right_2.png")));
             rightIdle = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream(filepath + "_right_idle.png")));
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+        } catch (Exception e) {
+            System.err.println("Image for Entity: " + this +  " not found.");
         }
     }
 

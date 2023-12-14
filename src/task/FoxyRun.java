@@ -55,7 +55,7 @@ public class FoxyRun extends Task implements ActionListener, KeyListener {
             assert is != null;
             pixelFont = Font.createFont(Font.TRUETYPE_FONT, is).deriveFont(25f);
         }catch (Exception e){
-            System.out.println("Image error!");
+            System.out.println("Font for FoxyRun not found.");
         }
 
         playerX = 20;
@@ -209,6 +209,17 @@ public class FoxyRun extends Task implements ActionListener, KeyListener {
         playMusic(20);
         timer.start();
         updateScoreLabel();
+    }
+
+    @Override
+    public void close() {
+        timer.stop();
+        stopMusic();
+        isJumping = false;
+        obstacles.clear();
+        score = 0;
+        dispose();
+        game.changeState(Game.States.PLAY);
     }
 
     @Override

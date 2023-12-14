@@ -94,7 +94,7 @@ public class FixVents extends Task implements Counter {
                         count++;
                     }
                 }catch (Exception e){
-                    System.out.println("Picture error!");
+                    System.err.println("Images for FixVents not found.");
                 }
             }
         }

@@ -1,14 +1,12 @@
 package main;
 
-import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.util.Objects;
 
 public class KeyHandler implements KeyListener {
     Game game;
 
-    public boolean W, S, A, D, E, SHIFT;
+    public boolean W, S, A, D, E, T = false, SHIFT;
 
     public KeyHandler(Game game) {
         this.game = game;
@@ -88,6 +86,10 @@ public class KeyHandler implements KeyListener {
                 if (code == KeyEvent.VK_D) D = true;
                 if (code == KeyEvent.VK_SHIFT) SHIFT = true;
                 if (code == KeyEvent.VK_P) game.changeState(Game.States.PAUSE);
+                if (code == KeyEvent.VK_T) {
+                    T = !T;
+                    game.playSound(5);
+                }
                 if (code == KeyEvent.VK_ESCAPE) game.changeState(Game.States.OPTIONS);
                 if (code == KeyEvent.VK_E) {
                     game.player.interactItem();
@@ -102,12 +104,6 @@ public class KeyHandler implements KeyListener {
             case GAME_OVER -> {
                 if (code == KeyEvent.VK_ENTER) game.changeState(Game.States.PLAY);
             }
-//            case TASK -> {
-//                if (code == KeyEvent.VK_ESCAPE) {
-//                    game.tasks[game.taskNumber].close();
-//                    game.changeState(Game.States.PLAY);
-//                }
-//            }
         }
     }
     @Override

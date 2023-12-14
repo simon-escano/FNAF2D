@@ -45,7 +45,7 @@ public class Sound {
             clip.open(ais);
             volume = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            System.err.println("Audio[" + i + "] not found.");
         }
     }
 

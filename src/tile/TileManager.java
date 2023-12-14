@@ -49,6 +49,7 @@ public class TileManager {
         tiles[26] = new Tile("stairs.png");
         tiles[27] = new Tile("stairs_edge_01.png");
         tiles[28] = new Tile("stairs_edge_02.png");
+        tiles[29] = new Tile("wall_front04.png");
     }
 
     public void loadMap(String fileName) {
@@ -71,8 +72,8 @@ public class TileManager {
                 }
             }
             br.close();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+        } catch (Exception e) {
+            System.err.println("Map file not found.");
         }
     }
 

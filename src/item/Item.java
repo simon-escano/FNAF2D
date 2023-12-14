@@ -9,19 +9,29 @@ public abstract class Item {
     public BufferedImage image;
     public String name;
     public boolean collision = false;
+    public boolean top = false;
     public int mapX, mapY;
     public Rectangle solidArea;
-    public int solidAreaDefaultX = 0;
-    public int solidAreaDefaultY = 0;
+    public int solidAreaDefaultX;
+    public int solidAreaDefaultY;
 
     public Item(int mapX, int mapY, int saX, int saY, int saWidth, int saHeight, Game game) {
         this.mapX = mapX * game.tileSize;
         this.mapY = mapY * game.tileSize;
         solidArea = new Rectangle(saX, saY, saWidth, saHeight);
+        solidAreaDefaultX = solidArea.x;
+        solidAreaDefaultY = solidArea.y;
     }
 
     public Item(int mapX, int mapY, Game game) {
         this(mapX, mapY, 0, 0, game.tileSize, game.tileSize, game);
+    }
+
+    public Item setSolidArea(Rectangle solidArea) {
+        this.solidArea = solidArea;
+        solidAreaDefaultX = solidArea.x;
+        solidAreaDefaultY = solidArea.y;
+        return this;
     }
 
     public void draw(Graphics2D graphics2D, Game game) {

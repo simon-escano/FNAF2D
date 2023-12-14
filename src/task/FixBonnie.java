@@ -1,6 +1,7 @@
 package task;
 
 import entity.Bonnie;
+import entity.NPC;
 import item.TaskStarter;
 import main.Game;
 
@@ -35,8 +36,8 @@ public class FixBonnie extends Task implements Counter {
             InputStream is = getClass().getResourceAsStream("/fonts/VCRosdNEUE.ttf");
             assert is != null;
             setFont(Font.createFont(Font.TRUETYPE_FONT, is).deriveFont(40f));
-        } catch (FontFormatException | IOException e) {
-            throw new RuntimeException(e);
+        } catch (Exception e) {
+            System.err.println("Font for FixBonnie not found.");
         }
 
         puzzleButtons = new JButton[3][3];
@@ -218,6 +219,9 @@ public class FixBonnie extends Task implements Counter {
         removeTask();
         game.npc[1] = new Bonnie(game, 19, 4);
         game.itemManager.addItem(new TaskStarter("Balloon Pop", 28, 27, game));
+        for (NPC animatronic : game.npc) {
+            if (animatronic != null) animatronic.idle = false;
+        }
     }
 
     @Override

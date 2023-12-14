@@ -71,8 +71,8 @@ public class FixLights extends Task implements MouseMotionListener, MouseListene
                 line = br.readLine();
                 pos_color[i] = Integer.parseInt(line);
             }
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+        } catch (Exception e) {
+            System.err.println("Level .txt for FixLights not found.");
         }
 
         setSize( 200 + 100 * cellSize, 200 + 100 * cellSize );

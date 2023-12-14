@@ -22,7 +22,7 @@ public class Game extends JPanel implements Runnable {
 
     public boolean fullscreen = false;
     public final Dimensions screen = new Dimensions(16, 9, this);
-    public final Dimensions map = new Dimensions(46, 48, this);
+    public final Dimensions map = new Dimensions(48, 48, this);
     BufferedImage tempScreen;
     Graphics2D graphics2D;
 
@@ -75,9 +75,9 @@ public class Game extends JPanel implements Runnable {
 
     public void setup() {
         state = States.TITLE;
-        loopSound(3);
-        itemManager.loadItems();
         NPCManager.loadNPC();
+        itemManager.loadItems();
+        loopSound(3);
     }
 
     public void setFullscreen() {
@@ -108,6 +108,7 @@ public class Game extends JPanel implements Runnable {
             itemManager.draw(graphics2D);
             NPCManager.draw(graphics2D);
             player.draw(graphics2D);
+            itemManager.drawTop(graphics2D);
             ui.draw(graphics2D);
         }
 
@@ -168,7 +169,7 @@ public class Game extends JPanel implements Runnable {
     public static JFrame window;
     public static void main(String[] args) {
         window = new JFrame();
-        window.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         window.setResizable(false);
         window.setTitle("Night Shift at Freddy's");
 

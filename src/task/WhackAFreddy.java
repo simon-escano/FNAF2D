@@ -62,7 +62,7 @@ public class WhackAFreddy extends Task implements Counter {
             assert is != null;
             pixelFont = Font.createFont(Font.TRUETYPE_FONT, is).deriveFont(24f);
         } catch (Exception e) {
-            System.out.println("Font error!");
+            System.out.println("Font for WhackAFreddy not found.");
         }
 
         scoreLabel.setFont(pixelFont);
@@ -73,7 +73,7 @@ public class WhackAFreddy extends Task implements Counter {
             hammerCursor = Toolkit.getDefaultToolkit().createCustomCursor(hammerImage, new Point(0, 0), "hammerCursor");
             hammerCursorWhack = Toolkit.getDefaultToolkit().createCustomCursor(hammerWhack, new Point(0, 0), "hammerCursorWhack");
         } catch (Exception e) {
-            System.out.println("Error loading hammer cursor image");
+            System.out.println("Image for WhackAFreddy hammer not found.");
         }
 
         addMouseListener(new MouseAdapter() {
@@ -139,8 +139,8 @@ public class WhackAFreddy extends Task implements Counter {
             Image img = ImageIO.read(Objects.requireNonNull(getClass().getResource("/tasks/whack_a_freddy/emptyWhack.png")));
             Image newImg = img.getScaledInstance(70, 70, java.awt.Image.SCALE_SMOOTH);
             return new ImageIcon(newImg);
-        } catch (IOException e) {
-            System.out.println("Error loading emptyWhack.png");
+        } catch (Exception e) {
+            System.out.println("Image for WhackAFreddy empty whack not found.");
             return null;
         }
     }
@@ -171,7 +171,7 @@ public class WhackAFreddy extends Task implements Counter {
 
         try{
             Image img;
-            if(row%2 == 0){
+            if(row % 2 == 0){
                 img = ImageIO.read(Objects.requireNonNull(getClass().getResource("/tasks/whack_a_freddy/freddy.png")));
                 buttons[row][col].setText("1");
             }else{
@@ -180,8 +180,8 @@ public class WhackAFreddy extends Task implements Counter {
             }
             Image newImg = img.getScaledInstance(70, 70, java.awt.Image.SCALE_SMOOTH);
             buttons[row][col].setIcon(new ImageIcon(newImg));
-        }catch (ImagingOpException | IOException e){
-            System.out.println("Freddy error!");
+        }catch (Exception e){
+            System.err.println("Images for moles in WhackAFreddy not found.");
         }
 
         if(score == 10){

@@ -54,7 +54,7 @@ public class BalloonPop extends Task implements Counter {
             timer = new Timer(TIMER_DELAY, e -> moveBalloons());
             timer.start();
         } catch (Exception e) {
-            System.out.println("Image error!");
+            System.err.println("Image for BalloonPop background not found.");
         }
     }
 

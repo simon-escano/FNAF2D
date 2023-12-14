@@ -12,8 +12,8 @@ public class Tile {
     public Tile(String filename) {
         try {
             image = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/tiles/" + filename)));
-        } catch(IOException e) {
-            throw new RuntimeException(e);
+        } catch(Exception e) {
+            System.err.println("Image[" + filename + "] for Tile not found.");
         }
     }
 

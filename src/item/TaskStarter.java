@@ -8,12 +8,12 @@ import java.util.Objects;
 
 public class TaskStarter extends Item {
     public TaskStarter(String name, int mapX, int mapY, Game game) {
-        super(mapX, mapY, 48, 48, game.tileSize - 48, game.tileSize - 48, game);
+        super(mapX, mapY, 0, 0, game.tileSize, game.tileSize, game);
         this.name = name;
         try {
             image = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/items/task.png")));
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+        } catch (Exception e) {
+            System.err.println("Image for TaskStarter not found");
         }
     }
 }

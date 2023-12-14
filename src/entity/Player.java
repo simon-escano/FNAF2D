@@ -12,7 +12,7 @@ import java.util.Objects;
 
 public class Player extends Entity {
 
-    BufferedImage fov;
+    public BufferedImage fov;
     public int numOfItems;
     public Item[] items;
 
@@ -24,14 +24,13 @@ public class Player extends Entity {
         solidArea = new Rectangle(game.tileSize / 6, (game.tileSize / 3) - 1, game.tileSize * 2/3, game.tileSize * 2/3);
         solidAreaDefaultX = solidArea.x;
         solidAreaDefaultY = solidArea.y;
-        System.out.println(solidArea);
 
         setDefaultValues();
         loadImage("/player/guard");
         try {
             fov = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/player/fov.png")));
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+        } catch (Exception e) {
+            System.err.println("Image for Player.fov not found.");
         }
     }
 
@@ -39,7 +38,7 @@ public class Player extends Entity {
         numOfItems = 0;
         items = new Item[50];
         mapX = game.tileSize * 21;
-        mapY = game.tileSize * 45;
+        mapY = (game.tileSize * 43) + game.tileSize/4;
         speed = 3;
         direction = "up";
     }
@@ -97,20 +96,23 @@ public class Player extends Entity {
                 case "Fix Vents" -> game.task = new FixVents(game);
             }
         } else if (item instanceof Door) {
+            if (new Rectangle(solidArea.x + mapX, solidArea.y + mapY, solidArea.width, solidArea.height)
+                    .intersects(new Rectangle(item.solidArea.x + item.mapX, item.solidArea.y + item.mapY, item.solidArea.width, item.solidArea.height)))
+                return;
             game.playSound(8);
             ((Door) item).open = !((Door) item).open;
             item.collision = !((Door) item).open;
             if (((Door) item).open) {
                 try {
                     item.image = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/tiles/air.png")));
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
+                } catch (Exception e) {
+                    System.err.println("Image for Air not found.");
                 }
             } else {
                 try {
                     item.image = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/items/door.png")));
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
+                } catch (Exception e) {
+                    System.err.println("Image for Door not found.");
                 }
             }
         }
@@ -145,6 +147,5 @@ public class Player extends Entity {
         if (!game.keyHandler.W && !game.keyHandler.S && !game.keyHandler.A && !game.keyHandler.D)
             spriteNum = 0;
         super.draw(graphics2D);
-        graphics2D.drawImage(fov, (screenX - game.screen.width/2) + game.tileSize/2, (screenY - game.screen.height/2) + game.tileSize/2, game.screen.width, game.screen.height, null);
     }
 }

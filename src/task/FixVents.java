@@ -166,7 +166,7 @@ public class FixVents extends Task implements Counter {
                 emptyCol = col;
 
                 playSE(14);
-
+                win();
                 if (isPuzzleSolved()) {
                     win();
                 }
@@ -213,6 +213,7 @@ public class FixVents extends Task implements Counter {
         close();
         timer.stop();
         removeTask();
+        game.changeState(Game.States.ENDING);
     }
 
     @Override

@@ -14,7 +14,6 @@ public abstract class NPC extends Entity {
     public NPC(Game game) {
         super(game);
     }
-
     public void setAction() {
         if (chase) {
             searchPath((game.player.mapX + game.player.solidArea.x) / game.tileSize, (game.player.mapY + game.player.solidArea.y) / game.tileSize);
@@ -36,9 +35,8 @@ public abstract class NPC extends Entity {
         game.collisionChecker.checkTile(this);
         game.collisionChecker.checkItem(this, false);
         if (game.collisionChecker.checkPlayer(this)) {
-//            Game.deathCause = "[insert " + name + " jumpscare]";
-//            game.playSound(4);
-//            game.changeState(Game.States.GAME_OVER);
+            game.killer = this;
+            game.changeState(Game.States.GAME_OVER);
         }
     }
 

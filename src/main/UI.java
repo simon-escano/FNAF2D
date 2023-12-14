@@ -1,8 +1,8 @@
 package main;
 
 import javax.imageio.ImageIO;
+import javax.swing.*;
 import java.awt.*;
-import java.io.IOException;
 import java.io.InputStream;
 import java.util.Objects;
 
@@ -11,6 +11,16 @@ public class UI {
     Graphics2D graphics2D;
     Font font;
     public int command = 0;
+    float alpha = 0;
+    boolean blackScreenDone = false;
+    int jumpscareNum = 0;
+    private boolean blinkVisible = true;
+    Timer timer = new Timer(400, e1 -> {
+        blinkVisible = !blinkVisible;
+        if (!blinkVisible) {
+            ((Timer) e1.getSource()).stop();
+        }
+    });
     public UI(Game game) {
         this.game = game;
         try {
@@ -38,11 +48,17 @@ public class UI {
             case PAUSE -> drawPause();
             case GAME_OVER -> drawGameOver();
             case TASK -> drawTask();
+            case ENDING -> drawEnding();
         }
     }
 
     public void drawTitle() {
-        image("/ui/main-menu.png", 0, 0, game.screen.width, game.screen.height);
+        if (blinkVisible) {
+            image("/ui/main-menu.png", 0, 0, game.screen.width, game.screen.height);
+        } else {
+            image("/ui/main-blink.png", 0, 0, game.screen.width, game.screen.height);
+        }
+
         int y = game.tileSize * 6;
         int x = game.tileSize * 2;
         text("Play Game", x, y, 30, Color.white);
@@ -50,7 +66,9 @@ public class UI {
         y += game.tileSize / 2;
         text("Quit", x, y, 30, Color.white);
         if (command == 1) text(">", x - game.tileSize/2, y, 30, Color.white);
-
+        if (!timer.isRunning()) {
+            timer.start();
+        }
         image("/ui/static.png", 0, 0, game.screen.width, game.screen.height);
     }
 
@@ -109,10 +127,33 @@ public class UI {
     }
 
     public void drawGameOver() {
-        graphics2D.setColor(new Color(0, 0, 0, 150));
-        graphics2D.fillRect(0, 0, game.screen.width, game.screen.height);
-        image("/ui/static.png", 0, 0, game.screen.width, game.screen.height);
-        text(Game.deathCause, game.screen.height/2, 30, Color.white);
+        if (!blackScreenDone) {
+            alpha += 0.005f;
+            if (alpha > 1f) {
+                alpha = 1f;
+            }
+            drawBlackScreen(alpha);
+            if (alpha == 1f) {
+                alpha = 0;
+                blackScreenDone = true;
+            }
+        } else {
+            if (jumpscareNum == 39) {
+                jumpscareNum = 0;
+                blackScreenDone = false;
+                game.changeState(Game.States.PLAY);
+                game.restart();
+                return;
+            }
+            if (jumpscareNum == 0) {
+                game.stopSound();
+                game.loopSound(9);
+                game.playSound(4);
+            }
+            String nameUpper = game.killer.name.substring(0, 1).toUpperCase() + game.killer.name.substring(1);
+            image("/jumpscares/" + nameUpper + "/" + nameUpper + "Scare (" + (jumpscareNum + 1) + ").png", 0, 0, game.screen.width, game.screen.height);
+            jumpscareNum++;
+        }
     }
 
     public void drawTask() {
@@ -121,6 +162,24 @@ public class UI {
         image("/ui/static.png", 0, 0, game.screen.width, game.screen.height);
         text("TASK ONGOING", game.screen.height/2, 80, Color.white);
         text("(alt + tab) to switch to task", game.screen.height/2 + game.tileSize/2, 30, Color.white);
+    }
+
+    public void drawEnding() {
+        alpha += 0.003f;
+        if (alpha > 1f) {
+            alpha = 1f;
+        }
+        drawBlackScreen(alpha);
+        if (alpha == 1f) {
+            game.changeState(Game.States.TITLE);
+        }
+    }
+
+    public void drawBlackScreen(float alpha) {
+        graphics2D.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, alpha));
+        graphics2D.setColor(Color.black);
+        graphics2D.fillRect(0, 0, game.screen.width, game.screen.height);
+        graphics2D.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));
     }
 
     public int centerText(String string) {
@@ -154,11 +213,5 @@ public class UI {
         graphics2D.setColor(new Color(255, 255, 255));
         graphics2D.setStroke(new BasicStroke(3));
         graphics2D.drawRoundRect(x + 3, y + 3, width - 6, height - 6, 25, 25);
-    }
-
-    public void pane(int width, int height) {
-        int x = game.screen.width / 2 - width / 2;
-        int y = game.screen.height / 2 - height / 2;
-        pane (x, y, width, height);
     }
 }

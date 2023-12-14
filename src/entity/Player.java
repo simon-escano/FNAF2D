@@ -7,7 +7,6 @@ import task.*;
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.IOException;
 import java.util.Objects;
 
 public class Player extends Entity {
@@ -54,7 +53,7 @@ public class Player extends Entity {
             collisionOn = false;
             game.collisionChecker.checkTile(this);
             game.collisionChecker.checkItem(this, true);
-            game.collisionChecker.checkEntity(this, game.npc);
+//            game.collisionChecker.checkEntity(this, game.npc);
 
             if (!collisionOn) {
                 if (direction.equals("up")) mapY -= speed;

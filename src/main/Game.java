@@ -31,6 +31,7 @@ public class Game extends JPanel implements Runnable {
     Thread thread = new Thread(this);
     Sound sbg = new Sound();
     Sound sfx = new Sound();
+    public NPC killer;
     public TileManager tileManager = new TileManager(this);
     public ItemManager itemManager = new ItemManager(this);
     NPCManager NPCManager = new NPCManager(this);
@@ -41,12 +42,11 @@ public class Game extends JPanel implements Runnable {
     public Item[] items;
     public NPC[] npc;
     public Task task;
-    public ArrayList<String> taskInfo = new ArrayList<>();
+    public ArrayList<String> taskInfo;
     public int taskPaneHeight;
-    public static String deathCause;
     public boolean lightsOff = false;
 
-    public enum States { TITLE, OPTIONS, PLAY, PAUSE, GAME_OVER, TASK }
+    public enum States { TITLE, OPTIONS, PLAY, PAUSE, GAME_OVER, TASK, ENDING }
     public States state;
     public Game() {
         System.out.println("Screen size: " + screen.cols * tileSize + " x " + screen.rows * tileSize);
@@ -77,6 +77,7 @@ public class Game extends JPanel implements Runnable {
     }
 
     public void setup() {
+        taskInfo = new ArrayList<>();
         taskPaneHeight = tileSize * 2;
         taskInfo.add("Find the storage room to fix Bonnie.");
         taskInfo.add("(press SHIFT to sprint)");
@@ -154,18 +155,22 @@ public class Game extends JPanel implements Runnable {
                 loopSound(3);
                 break;
             case GAME_OVER:
-                restart();
-                stopSound();
-                loopSound(9);
                 break;
             case TASK:
                 stopSound();
+                break;
+            case ENDING:
+                playSound(28);
                 break;
         }
         ui.command = 0;
     }
 
     public void restart() {
+        taskInfo = new ArrayList<>();
+        taskPaneHeight = tileSize * 2;
+        taskInfo.add("Find the storage room to fix Bonnie.");
+        taskInfo.add("(press SHIFT to sprint)");
         player.setDefaultValues();
         itemManager.loadItems();
         NPCManager.loadNPC();

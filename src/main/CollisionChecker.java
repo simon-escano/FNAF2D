@@ -2,8 +2,6 @@ package main;
 
 import entity.Entity;
 
-import java.awt.*;
-
 public class CollisionChecker {
     Game game;
     public CollisionChecker(Game game) {

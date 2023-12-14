@@ -6,7 +6,6 @@ import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.Objects;
-import java.util.Random;
 
 public class BurgerKingGuy extends NPC {
     public BurgerKingGuy(Game game, int x, int y) {
@@ -63,5 +62,13 @@ public class BurgerKingGuy extends NPC {
             graphics2D.drawImage(image, screenX, screenY, game.tileSize, game.tileSize, null);
         }
         graphics2D.drawImage(image, screenX, screenY, game.tileSize, game.tileSize, null);
+    }
+
+    @Override
+    public void checkCollision() {
+        collisionOn = false;
+        game.collisionChecker.checkTile(this);
+        game.collisionChecker.checkItem(this, false);
+        game.collisionChecker.checkPlayer(this);
     }
 }

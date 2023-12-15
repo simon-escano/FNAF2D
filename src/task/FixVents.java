@@ -76,7 +76,7 @@ public class FixVents extends Task implements Counter {
     }
 
     public void gameInitialize() {
-        playMusic(13);
+        playMusic(29);
         int count = 1;
         String imgName;
         for (int i = 0; i < puzzleButtons.length; i++) {
@@ -166,7 +166,7 @@ public class FixVents extends Task implements Counter {
                 emptyCol = col;
 
                 playSE(14);
-                win();
+
                 if (isPuzzleSolved()) {
                     win();
                 }

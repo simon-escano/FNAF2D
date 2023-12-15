@@ -41,6 +41,7 @@ public class Sound {
         soundURL[26] = getClass().getResource("/sound/lightson.wav");
         soundURL[27] = getClass().getResource("/sound/bgm6.wav");
         soundURL[28] = getClass().getResource("/sound/ending.wav");
+        soundURL[29] = getClass().getResource("/sound/bgm7.wav");
     }
 
     public void setFile(int i) {

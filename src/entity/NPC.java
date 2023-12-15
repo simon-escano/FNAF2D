@@ -33,7 +33,7 @@ public abstract class NPC extends Entity {
     public void checkCollision() {
         collisionOn = false;
         game.collisionChecker.checkTile(this);
-        game.collisionChecker.checkItem(this, false);
+        game.collisionChecker.checkItem(this);
         if (game.collisionChecker.checkPlayer(this)) {
             game.killer = this;
             game.changeState(Game.States.GAME_OVER);

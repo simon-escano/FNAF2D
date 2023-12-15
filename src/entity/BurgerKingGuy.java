@@ -68,7 +68,7 @@ public class BurgerKingGuy extends NPC {
     public void checkCollision() {
         collisionOn = false;
         game.collisionChecker.checkTile(this);
-        game.collisionChecker.checkItem(this, false);
+        game.collisionChecker.checkItem(this);
         game.collisionChecker.checkPlayer(this);
     }
 }

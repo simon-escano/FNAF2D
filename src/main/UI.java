@@ -142,7 +142,7 @@ public class UI {
                 jumpscareNum = 0;
                 blackScreenDone = false;
                 game.changeState(Game.States.PLAY);
-                game.restart();
+                game.replay();
                 return;
             }
             if (jumpscareNum == 0) {
@@ -152,6 +152,7 @@ public class UI {
             }
             String nameUpper = game.killer.name.substring(0, 1).toUpperCase() + game.killer.name.substring(1);
             image("/jumpscares/" + nameUpper + "/" + nameUpper + "Scare (" + (jumpscareNum + 1) + ").png", 0, 0, game.screen.width, game.screen.height);
+            image("/ui/static.png", 0, 0, game.screen.width, game.screen.height);
             jumpscareNum++;
         }
     }

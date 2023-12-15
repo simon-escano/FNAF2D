@@ -176,6 +176,10 @@ public class Game extends JPanel implements Runnable {
         NPCManager.loadNPC();
     }
 
+    public void replay() {
+        player.setDefaultValues();
+    }
+
     public static JFrame window;
     public static void main(String[] args) {
         window = new JFrame();

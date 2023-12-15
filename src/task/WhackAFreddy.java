@@ -217,6 +217,14 @@ public class WhackAFreddy extends Task implements Counter {
         game.itemManager.addItem(new TaskStarter("Fix Vents", 34, 36, game));
     }
 
+    @Override
+    public void close() {
+        stopMusic();
+        dispose();
+        timer.stop();
+        game.changeState(Game.States.PLAY);
+    }
+
     private class MoleListener implements ActionListener {
         private final int row;
         private final int col;

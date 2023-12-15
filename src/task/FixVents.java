@@ -226,4 +226,12 @@ public class FixVents extends Task implements Counter {
         second = 59;
         shufflePuzzle();
     }
+
+    @Override
+    public void close() {
+        stopMusic();
+        dispose();
+        timer.stop();
+        game.changeState(Game.States.PLAY);
+    }
 }

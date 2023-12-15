@@ -141,6 +141,14 @@ public class FixBonnie extends Task implements Counter {
         this.font = font;
     }
 
+    @Override
+    public void close() {
+        stopMusic();
+        dispose();
+        timer.stop();
+        game.changeState(Game.States.PLAY);
+    }
+
 
     private class PuzzleButtonListener implements ActionListener {
         @Override

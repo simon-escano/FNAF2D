@@ -67,6 +67,14 @@ public class BalloonPop extends Task implements Counter {
         JOptionPane.showMessageDialog(this, "Game over! You hit Balloon Boy.");
     }
 
+    @Override
+    public void close() {
+        stopMusic();
+        dispose();
+        timer.stop();
+        game.changeState(Game.States.PLAY);
+    }
+
     private JButton createBalloonButton() {
         JButton balloon = new JButton();
         balloon.setSize(BALLOON_SIZE, BALLOON_SIZE);

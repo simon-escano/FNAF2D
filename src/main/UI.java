@@ -127,34 +127,22 @@ public class UI {
     }
 
     public void drawGameOver() {
-        if (!blackScreenDone) {
-            alpha += 0.005f;
-            if (alpha > 1f) {
-                alpha = 1f;
-            }
-            drawBlackScreen(alpha);
-            if (alpha == 1f) {
-                alpha = 0;
-                blackScreenDone = true;
-            }
-        } else {
-            if (jumpscareNum == 39) {
-                jumpscareNum = 0;
-                blackScreenDone = false;
-                game.changeState(Game.States.PLAY);
-                game.replay();
-                return;
-            }
-            if (jumpscareNum == 0) {
-                game.stopSound();
-                game.loopSound(9);
-                game.playSound(4);
-            }
-            String nameUpper = game.killer.name.substring(0, 1).toUpperCase() + game.killer.name.substring(1);
-            image("/jumpscares/" + nameUpper + "/" + nameUpper + "Scare (" + (jumpscareNum + 1) + ").png", 0, 0, game.screen.width, game.screen.height);
-            image("/ui/static.png", 0, 0, game.screen.width, game.screen.height);
-            jumpscareNum++;
+        if (jumpscareNum == 39) {
+            jumpscareNum = 0;
+            blackScreenDone = false;
+            game.changeState(Game.States.PLAY);
+            game.replay();
+            return;
         }
+        if (jumpscareNum == 0) {
+            game.stopSound();
+            game.loopSound(9);
+            game.playSound(4);
+        }
+        String nameUpper = game.killer.name.substring(0, 1).toUpperCase() + game.killer.name.substring(1);
+        image("/jumpscares/" + nameUpper + "/" + nameUpper + "Scare (" + (jumpscareNum + 1) + ").png", 0, 0, game.screen.width, game.screen.height);
+        image("/ui/static.png", 0, 0, game.screen.width, game.screen.height);
+        jumpscareNum++;
     }
 
     public void drawTask() {

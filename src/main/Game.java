@@ -19,7 +19,7 @@ public class Game extends JPanel implements Runnable {
     final int scale = 5;
     public final int tileSize = originalTileSize * scale;
 
-    int FPS = 165;
+    int FPS = 60;
 
     public boolean fullscreen = false;
     public final Dimensions screen = new Dimensions(16, 9, this);

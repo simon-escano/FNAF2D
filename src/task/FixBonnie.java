@@ -169,7 +169,7 @@ public class FixBonnie extends Task implements Counter {
                 emptyCol = col;
 
                 playSE(14);
-                win();
+
                 if (isPuzzleSolved()) {
                     win();
                 }
